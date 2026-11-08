@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Fluxo | Painel de Vendas</title>
+    <meta name="description" content="Fluxo: painel de gestão de vendas com indicadores, gráficos e pedidos em tempo real.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%234f46e5'/><path d='M8 20l5-6 4 4 7-8' stroke='white' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/dashboard.css">
+  </head>
+  <body class="fx">
+    <aside class="fx-side" id="fx-side">
+      <a href="#" class="fx-logo"><span class="fx-logo-mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></span> Fluxo</a>
+      <nav class="fx-menu" aria-label="Menu do painel">
+        <button class="fx-menu-item active" data-view="overview"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Visão geral</button>
+        <button class="fx-menu-item" data-view="orders"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Pedidos <span class="fx-badge" id="fx-pending-badge">0</span></button>
+        <button class="fx-menu-item" data-view="products"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg> Produtos</button>
+        <button class="fx-menu-item" data-view="customers"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Clientes</button>
+      </nav>
+      <div class="fx-side-card">
+        <strong>Meta do mês</strong>
+        <span id="fx-goal-text">R$ 0 de R$ 100 mil</span>
+        <div class="fx-progress"><span id="fx-goal-bar"></span></div>
+      </div>
+      <a href="../../index.html#projetos" class="fx-back"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Voltar ao portfólio</a>
+    </aside>
+    <div class="fx-overlay" id="fx-overlay"></div>
+
+    <div class="fx-main">
+      <header class="fx-top">
+        <button class="fx-icon-btn fx-burger" id="fx-burger" aria-label="Abrir menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button>
+        <label class="fx-search">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="search" id="fx-search" placeholder="Buscar pedido, cliente ou produto" aria-label="Buscar">
+        </label>
+        <div class="fx-top-right">
+          <button class="fx-icon-btn fx-bell" id="fx-bell" aria-label="Notificações"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span></span></button>
+          <div class="fx-notes" id="fx-notes" hidden>
+            <strong>Notificações</strong>
+            <p id="fx-note-order"></p>
+            <p><b>Estoque baixo</b> Jaqueta Corta-Vento · 3 un.</p>
+            <p id="fx-note-goal"></p>
+          </div>
+          <div class="fx-user"><span>AM</span><div><strong>Ana Martins</strong><small>Administradora</small></div></div>
+        </div>
+      </header>
+
+      <main class="fx-content">
+        <!-- Visão geral -->
+        <section class="fx-view active" data-view="overview">
+          <div class="fx-title">
+            <div>
+              <h1>Olá, Ana 👋</h1>
+              <p>Acompanhe o desempenho da sua loja.</p>
+            </div>
+            <div class="fx-seg" role="tablist" aria-label="Período">
+              <button class="active" data-period="7">7 dias</button>
+              <button data-period="30">30 dias</button>
+              <button data-period="365">12 meses</button>
+            </div>
+          </div>
+
+          <div class="fx-kpis" id="fx-kpis"></div>
+
+          <div class="fx-grid">
+            <article class="fx-card fx-chart-card">
+              <div class="fx-card-head">
+                <div><h2>Receita</h2><p id="fx-chart-sub">Últimos 7 dias</p></div>
+                <div class="fx-legend"><span class="cur"></span> Atual <span class="prev"></span> Anterior</div>
+              </div>
+              <div class="fx-chart" id="fx-chart"></div>
+            </article>
+            <article class="fx-card">
+              <div class="fx-card-head"><div><h2>Vendas por categoria</h2><p>Participação na receita</p></div></div>
+              <div class="fx-donut-wrap">
+                <svg viewBox="0 0 120 120" class="fx-donut" id="fx-donut"></svg>
+                <div class="fx-donut-center"><strong id="fx-donut-total">0</strong><span>pedidos</span></div>
+              </div>
+              <ul class="fx-cats" id="fx-cats"></ul>
+            </article>
+          </div>
+
+          <div class="fx-grid fx-grid-2">
+            <article class="fx-card">
+              <div class="fx-card-head">
+                <div><h2>Pedidos recentes</h2><p>Atualizado agora</p></div>
+                <button class="fx-link" data-goto="orders">Ver todos <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+              </div>
+              <div class="fx-table-wrap"><table class="fx-table" id="fx-recent"></table></div>
+            </article>
+            <article class="fx-card">
+              <div class="fx-card-head"><div><h2>Mais vendidos</h2><p>Por unidades</p></div></div>
+              <ul class="fx-top-products" id="fx-top-products"></ul>
+            </article>
+          </div>
+        </section>
+
+        <!-- Pedidos -->
+        <section class="fx-view" data-view="orders">
+          <div class="fx-title">
+            <div><h1>Pedidos</h1><p id="fx-orders-count">0 pedidos</p></div>
+            <div class="fx-seg" id="fx-status-filter">
+              <button class="active" data-status="all">Todos</button>
+              <button data-status="Pago">Pagos</button>
+              <button data-status="Pendente">Pendentes</button>
+              <button data-status="Enviado">Enviados</button>
+              <button data-status="Entregue">Entregues</button>
+              <button data-status="Cancelado">Cancelados</button>
+            </div>
+          </div>
+          <article class="fx-card">
+            <div class="fx-table-wrap"><table class="fx-table" id="fx-orders"></table></div>
+            <p class="fx-empty" id="fx-orders-empty" hidden>Nenhum pedido encontrado para esse filtro.</p>
+          </article>
+        </section>
+
+        <!-- Produtos -->
+        <section class="fx-view" data-view="products">
+          <div class="fx-title"><div><h1>Produtos</h1><p>Estoque e desempenho</p></div></div>
+          <div class="fx-products" id="fx-products"></div>
+        </section>
+
+        <!-- Clientes -->
+        <section class="fx-view" data-view="customers">
+          <div class="fx-title"><div><h1>Clientes</h1><p>Quem mais compra na sua loja</p></div></div>
+          <article class="fx-card"><div class="fx-table-wrap"><table class="fx-table" id="fx-customers"></table></div></article>
+        </section>
+      </main>
+    </div>
+
+    <!-- Detalhe do pedido -->
+    <div class="fx-modal" id="fx-modal" hidden>
+      <div class="fx-modal-box" role="dialog" aria-modal="true" aria-labelledby="fx-modal-title">
+        <button class="fx-icon-btn fx-modal-close" id="fx-modal-close" aria-label="Fechar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        <div id="fx-modal-body"></div>
+      </div>
+    </div>
+
+    <script src="../../js/dashboard.js" defer></script>
+  </body>
+</html>

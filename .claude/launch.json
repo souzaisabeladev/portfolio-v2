@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "isa-static",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["C:/Users/ltcss/AppData/Local/Temp/claude/cb4969662af552fc/058ec11b-368f-4e0d-8301-ed4ce0156136/scratchpad/serve.cjs", "E:/Users/ltcss/isa", "5500"],
+      "port": 5500
+    }
+  ]
+}
